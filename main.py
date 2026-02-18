@@ -33,6 +33,13 @@ def main():
         "--save-images", action="store_true", help="個別のPNG画像も保存する"
     )
     parser.add_argument(
+        "--rotate",
+        type=int,
+        default=0,
+        choices=[0, 90, 180, 270],
+        help="出力画像の回転角度 (デフォルト: 0)",
+    )
+    parser.add_argument(
         "--debug", action="store_true", help="デバッグモード（SSIMグラフを表示）"
     )
 
@@ -50,11 +57,11 @@ def main():
             print("スライドが検出されませんでした。閾値を調整してみてください。")
             sys.exit(1)
 
-        save_as_pdf(slides, args.output)
+        save_as_pdf(slides, args.output, rotate=args.rotate)
 
         if args.save_images:
             output_dir = args.output.rsplit(".", 1)[0] + "_images"
-            save_images(slides, output_dir)
+            save_images(slides, output_dir, rotate=args.rotate)
 
         if args.debug:
             try:

@@ -124,13 +124,26 @@ def extract_slides(video_path, threshold=0.85, interval=0.5, min_slide_duration=
     return slides, ssim_values, timestamps
 
 
-def save_as_pdf(images, output_path):
+def rotate_image(image, degrees):
+    """OpenCVのBGR画像を指定角度で回転する（90, 180, 270度）"""
+    if degrees == 90:
+        return cv2.rotate(image, cv2.ROTATE_90_CLOCKWISE)
+    elif degrees == 180:
+        return cv2.rotate(image, cv2.ROTATE_180)
+    elif degrees == 270:
+        return cv2.rotate(image, cv2.ROTATE_90_COUNTERCLOCKWISE)
+    return image
+
+
+def save_as_pdf(images, output_path, rotate=0):
     """OpenCVのBGR画像リストをPDFとして保存する"""
     if not images:
         raise ValueError("保存する画像がありません")
 
     pil_images = []
     for img in images:
+        if rotate:
+            img = rotate_image(img, rotate)
         rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         pil_images.append(Image.fromarray(rgb))
 
@@ -140,13 +153,15 @@ def save_as_pdf(images, output_path):
         append_images=pil_images[1:],
         resolution=150,
     )
-    print(f"PDF保存完了: {output_path} ({len(images)}ページ)")
+    print(f"PDF保存完了: {output_path} ({len(images)}ページ, 回転: {rotate}度)")
 
 
-def save_images(images, output_dir):
+def save_images(images, output_dir, rotate=0):
     """OpenCVのBGR画像リストを個別PNGとして保存する"""
     os.makedirs(output_dir, exist_ok=True)
     for i, img in enumerate(images):
+        if rotate:
+            img = rotate_image(img, rotate)
         path = os.path.join(output_dir, f"slide_{i + 1:03d}.png")
         cv2.imwrite(path, img)
-    print(f"画像保存完了: {output_dir}/ ({len(images)}枚)")
+    print(f"画像保存完了: {output_dir}/ ({len(images)}枚, 回転: {rotate}度)")
