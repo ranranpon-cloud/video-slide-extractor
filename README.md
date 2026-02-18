@@ -44,7 +44,14 @@
 - **Pillow** — PDF生成
 - **tqdm** — 進捗バー表示
 
+## 動作要件
+
+- Python 3.9 以上
+- Git
+
 ## セットアップ
+
+### macOS
 
 ```bash
 git clone https://github.com/ranranpon-cloud/video-slide-extractor.git
@@ -53,6 +60,27 @@ python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
+
+### Windows
+
+1. **Python のインストール**
+   - https://www.python.org/downloads/ から Python 3.9 以上をダウンロード
+   - インストール時に **「Add Python to PATH」にチェック** を入れる
+
+2. **Git のインストール**
+   - https://git-scm.com/download/win からダウンロードしてインストール
+
+3. **セットアップ**
+
+```cmd
+git clone https://github.com/ranranpon-cloud/video-slide-extractor.git
+cd video-slide-extractor
+python -m venv venv
+venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+> **Note:** Windows では `python3` の代わりに `python`、`source venv/bin/activate` の代わりに `venv\Scripts\activate` を使用します。
 
 ## 利用方法
 
